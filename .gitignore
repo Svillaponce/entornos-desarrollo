@@ -1,0 +1,34 @@
+# IDE
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Documentación generada
+docs/generated/
+
+# Variables y secretos
+.env
+.env.*
+
+# Bases de datos de pruebas
+*.db
+*.sqlite
+*.sqlite3
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Temporales
+*.tmp
+*.bak
+*.swp
