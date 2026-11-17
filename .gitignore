@@ -11,6 +11,9 @@ venv/
 .coverage
 htmlcov/
 coverage.xml
+*.egg-info/
+build/
+dist/
 
 # Documentación generada
 docs/generated/
