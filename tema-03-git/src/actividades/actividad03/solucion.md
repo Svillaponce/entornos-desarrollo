@@ -1,48 +1,17 @@
 # Actividad 3 — Un commit equivocado y varios cambios pendientes
 
-Fuente: *Actividades tema 3 - Comandos de Git básicos*, Sebastián Villa Ponce, 08/11/2026.
+## Solución paso a paso
 
-## Pasos y decisiones
-
-1. Registrar `incidencias.py` y el README iniciales juntos. El enunciado enumera ambos archivos y después exige modificar el README versionado.
-2. Aplicar los cambios A y B, preparar ambos y retirar únicamente README con `git restore --staged README.md`.
-3. Confirmar el código con el mensaje deliberadamente incorrecto `cosas`. Revisar que el índice esté vacío y corregirlo con `git commit --amend -m ...`.
-4. Confirmar el README por separado.
-5. Crear PLAN y registrar `Plan provisional`; ejecutar `git reset --soft HEAD~1`, comprobar que PLAN aparece preparado (`A `) y confirmar con `Documentar futuras mejoras`.
-6. Introducir la línea de fallo, inspeccionar `git diff` y ejecutar `git restore incidencias.py` para descartar solo esa edición no preparada.
-7. Ejecutar el listado de tres incidencias numeradas y comprobar el estado final.
-
-## Respuestas
-
-`restore --staged` modifica el índice, conserva el archivo en disco y no mueve HEAD. `restore archivo` sustituye el contenido no preparado por el del índice: por eso primero se revisa el diff. `reset --soft HEAD~1` mueve la rama al commit anterior y conserva el índice y el directorio de trabajo.
-
-`--amend` reemplaza el último commit: cambia su hash, sin añadir un commit más a la cadena final. El historial final de `main` contiene **cuatro commits**, sin los mensajes `cosas` ni `Plan provisional`. Los commits sustituidos pueden seguir en el reflog; no se han borrado de la base de objetos inmediatamente. La salida final contiene Pantalla rota, Impresora sin papel y Red sin conexión, numeradas del 1 al 3.
-
-## Desarrollo completo en la terminal de Ubuntu
-
-Trabaja en una carpeta nueva fuera del repositorio de clase. Los archivos Python
-que acompañan este documento contienen el resultado final; para realizar la
-actividad se parte de las versiones iniciales que se muestran a continuación.
-Edita los archivos en PyCharm y ejecuta los comandos desde esta carpeta.
-No se necesitan dependencias externas ni conexión a GitHub.
+Ejecuta los comandos en la terminal de Ubuntu y edita los archivos con PyCharm.
+Los hashes mostrados son ejemplos de una ejecución; utiliza los de tu repositorio.
 
 ```bash
 mkdir git-03-incidencias
 cd git-03-incidencias
-```
-
-Si todavía no tienes configurada una identidad de Git, después de inicializar
-el repositorio ejecuta `git config user.name "Tu nombre"` y
-`git config user.email "tu-correo@example.com"`. Estos ajustes serán locales.
-Antes de cada commit se revisan el estado y los cambios preparados.
-Las salidas de referencia proceden de una ejecución comprobada; los mensajes
-pueden variar entre Windows y Ubuntu.
-
-```bash
 git init -b main
 ```
 
-Editar `incidencias.py` en PyCharm y guardar este contenido completo:
+En `incidencias.py`, guarda este contenido:
 
 ```python
 INCIDENCIAS = ["Pantalla rota", "Impresora sin papel"]
@@ -55,7 +24,7 @@ if __name__ == "__main__":
     listar()
 ```
 
-Editar `README.md` en PyCharm y guardar este contenido completo:
+En `README.md`, guarda este contenido:
 
 ```text
 # Incidencias
@@ -64,13 +33,10 @@ Listado de incidencias técnicas.
 
 ```bash
 git add incidencias.py README.md
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 A  README.md
@@ -79,13 +45,10 @@ A  incidencias.py
 
 ```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Crear listado de incidencias"
 ```
 
-Editar `incidencias.py` en PyCharm y guardar este contenido completo:
+En `incidencias.py`, guarda este contenido:
 
 ```python
 INCIDENCIAS = ["Pantalla rota", "Impresora sin papel", "Red sin conexión"]
@@ -98,7 +61,7 @@ if __name__ == "__main__":
     listar()
 ```
 
-Editar `README.md` en PyCharm y guardar este contenido completo:
+En `README.md`, guarda este contenido:
 
 ```text
 # Incidencias
@@ -108,21 +71,12 @@ Las incidencias se muestran numeradas.
 
 ```bash
 git add incidencias.py README.md
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git restore --staged README.md
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
  M README.md
@@ -133,7 +87,7 @@ M  incidencias.py
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
  M README.md
@@ -142,17 +96,11 @@ M  incidencias.py
 
 ```bash
 git diff --staged
-```
-
-```bash
 git commit -m cosas
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
  M README.md
@@ -160,21 +108,12 @@ Salida de referencia (los hashes pueden variar):
 
 ```bash
 git diff --staged
-```
-
-```bash
 git commit --amend -m "Numerar incidencias y añadir fallo de red"
-```
-
-```bash
 git add README.md
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 M  README.md
@@ -182,13 +121,10 @@ M  README.md
 
 ```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Documentar listado numerado"
 ```
 
-Editar `PLAN.md` en PyCharm y guardar este contenido completo:
+En `PLAN.md`, guarda este contenido:
 
 ```text
 # Plan de mejora
@@ -198,13 +134,10 @@ Editar `PLAN.md` en PyCharm y guardar este contenido completo:
 
 ```bash
 git add PLAN.md
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 A  PLAN.md
@@ -212,21 +145,12 @@ A  PLAN.md
 
 ```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Plan provisional"
-```
-
-```bash
 git reset --soft HEAD~1
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 A  PLAN.md
@@ -234,13 +158,10 @@ A  PLAN.md
 
 ```bash
 git diff --staged
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 A  PLAN.md
@@ -248,13 +169,10 @@ A  PLAN.md
 
 ```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Documentar futuras mejoras"
 ```
 
-Editar `incidencias.py` en PyCharm y guardar este contenido completo:
+En `incidencias.py`, guarda este contenido:
 
 ```python
 INCIDENCIAS = ["Pantalla rota", "Impresora sin papel", "Red sin conexión"]
@@ -273,7 +191,7 @@ print("FALLO DE PRUEBA")
 git diff
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 diff --git a/incidencias.py b/incidencias.py
@@ -290,13 +208,10 @@ index cde4408..2ac9cf7 100644
 
 ```bash
 git restore incidencias.py
-```
-
-```bash
 python3 incidencias.py
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 1. Pantalla rota
@@ -308,7 +223,7 @@ Salida de referencia (los hashes pueden variar):
 git log --oneline --graph --all --decorate
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 * 3568d23 (HEAD -> main) Documentar futuras mejoras
@@ -318,33 +233,22 @@ Salida de referencia (los hashes pueden variar):
 ```
 
 ```bash
-git status --porcelain
-```
-
-```bash
 git status
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 On branch main
 nothing to commit, working tree clean
 ```
 
-## Informe y comprobación de entrega
+## Respuestas
 
-Al realizar la práctica, copia al `INFORME.md` que pide el enunciado las respuestas
-y las evidencias indicadas en este documento, usando las salidas y hashes de tu
-propia ejecución. No confirmes ese informe. Para que el informe local no aparezca
-como archivo nuevo en `git status`, puedes excluirlo solo en este repositorio:
+`restore --staged` modifica el índice, conserva el archivo en disco y no mueve HEAD. `restore archivo` sustituye el contenido no preparado por el del índice: por eso primero se revisa el diff. `reset --soft HEAD~1` mueve la rama al commit anterior y conserva el índice y el directorio de trabajo.
 
-```bash
-printf '\n/INFORME.md\n' >> .git/info/exclude
-git status
-git log --oneline --graph --all --decorate
-```
+`--amend` reemplaza el último commit: cambia su hash, sin añadir un commit más a la cadena final. El historial final de `main` contiene **cuatro commits**, sin los mensajes `cosas` ni `Plan provisional`. Los commits sustituidos pueden seguir en el reflog; no se han borrado de la base de objetos inmediatamente. La salida final contiene Pantalla rota, Impresora sin papel y Red sin conexión, numeradas del 1 al 3.
 
-El código debe estar limpio y no debe quedar una fusión pendiente. Este
-`solucion.md` reúne la explicación y las respuestas; no es necesario añadir
-otros documentos explicativos al repositorio de clase.
+## Evidencias solicitadas
+
+Incluye en `INFORME.md` el historial final, el estado tras `reset --soft`, el estado final y la comparación entre las tres operaciones de recuperación. No añadas `INFORME.md` a ningún commit.

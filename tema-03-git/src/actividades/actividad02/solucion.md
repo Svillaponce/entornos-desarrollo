@@ -1,49 +1,17 @@
 # Actividad 2 — Auditoría de archivos y preparación selectiva
 
-Fuente: *Actividades tema 3 - Comandos de Git básicos*, Sebastián Villa Ponce, 08/11/2026.
+## Solución paso a paso
 
-## Pasos y decisiones
-
-1. Registrar el conversor y el README iniciales en un commit.
-2. Añadir la conversión inversa, la documentación y las reglas de exclusión. Crear también los dos archivos locales ficticios.
-3. Comparar `git status --short --untracked-files=all`, `git ls-files` y `git diff`: los dos archivos iniciales están versionados, `.gitignore` es nuevo y los archivos personales ya quedan ignorados.
-4. Usar `git check-ignore -v .env NOTAS_TEMPORALES.txt` para conocer la regla exacta y su línea.
-5. Preparar únicamente `conversor.py`, revisar `git diff --staged` y confirmar. Después confirmar solo README y `.gitignore`.
-6. Ejecutar y verificar que solo hay tres commits y ningún archivo personal versionado.
-
-## Respuestas
-
-El diff añade `fahrenheit_a_celsius` y sustituye la salida del programa por dos conversiones con etiquetas. No hace falta `git add -p`: toda la modificación de `conversor.py` es funcional y se selecciona por archivo. Si hubiera cambios ajenos en ese archivo, `git add -p conversor.py` permitiría seleccionar fragmentos.
-
-`.gitignore` debe versionarse para compartir las reglas con todo el equipo. Añadir `.env` a las reglas **no deja de seguir un archivo ya confirmado**. En ese caso se utilizaría `git rm --cached .env` y un nuevo commit: el archivo quedaría en disco, pero su contenido anterior seguiría en el historial. Aquí solo contiene `MODO=desarrollo`, sin credenciales.
-
-La salida es `20 ºC = 68.0 ºF` y `68 ºF = 20.0 ºC`. Las comprobaciones de ignorados y los extractos completos de ambos tipos de diff se incluyen a continuación.
-
-## Desarrollo completo en la terminal de Ubuntu
-
-Trabaja en una carpeta nueva fuera del repositorio de clase. Los archivos Python
-que acompañan este documento contienen el resultado final; para realizar la
-actividad se parte de las versiones iniciales que se muestran a continuación.
-Edita los archivos en PyCharm y ejecuta los comandos desde esta carpeta.
-No se necesitan dependencias externas ni conexión a GitHub.
+Ejecuta los comandos en la terminal de Ubuntu y edita los archivos con PyCharm.
+Los hashes mostrados son ejemplos de una ejecución; utiliza los de tu repositorio.
 
 ```bash
 mkdir git-02-conversor
 cd git-02-conversor
-```
-
-Si todavía no tienes configurada una identidad de Git, después de inicializar
-el repositorio ejecuta `git config user.name "Tu nombre"` y
-`git config user.email "tu-correo@example.com"`. Estos ajustes serán locales.
-Antes de cada commit se revisan el estado y los cambios preparados.
-Las salidas de referencia proceden de una ejecución comprobada; los mensajes
-pueden variar entre Windows y Ubuntu.
-
-```bash
 git init -b main
 ```
 
-Editar `conversor.py` en PyCharm y guardar este contenido completo:
+En `conversor.py`, guarda este contenido:
 
 ```python
 def celsius_a_fahrenheit(celsius):
@@ -53,7 +21,7 @@ if __name__ == "__main__":
     print(celsius_a_fahrenheit(20))
 ```
 
-Editar `README.md` en PyCharm y guardar este contenido completo:
+En `README.md`, guarda este contenido:
 
 ```text
 # Conversor
@@ -62,13 +30,10 @@ Conversión de grados Celsius a Fahrenheit.
 
 ```bash
 git add conversor.py README.md
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 A  README.md
@@ -79,7 +44,7 @@ A  conversor.py
 git diff --staged
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 diff --git a/README.md b/README.md
@@ -107,7 +72,7 @@ index 0000000..1a516af
 git commit -m "Crear conversor Celsius a Fahrenheit"
 ```
 
-Editar `.gitignore` en PyCharm y guardar este contenido completo:
+En `.gitignore`, guarda este contenido:
 
 ```text
 __pycache__/
@@ -118,7 +83,7 @@ __pycache__/
 NOTAS_TEMPORALES.txt
 ```
 
-Editar `conversor.py` en PyCharm y guardar este contenido completo:
+En `conversor.py`, guarda este contenido:
 
 ```python
 def celsius_a_fahrenheit(celsius):
@@ -132,7 +97,7 @@ if __name__ == "__main__":
     print("68 ºF =", fahrenheit_a_celsius(68), "ºC")
 ```
 
-Editar `README.md` en PyCharm y guardar este contenido completo:
+En `README.md`, guarda este contenido:
 
 ```text
 # Conversor
@@ -140,13 +105,13 @@ Conversión de grados Celsius a Fahrenheit.
 También convierte grados Fahrenheit a Celsius.
 ```
 
-Editar `.env` en PyCharm y guardar este contenido completo:
+En `.env`, guarda este contenido:
 
 ```text
 MODO=desarrollo
 ```
 
-Editar `NOTAS_TEMPORALES.txt` en PyCharm y guardar este contenido completo:
+En `NOTAS_TEMPORALES.txt`, guarda este contenido:
 
 ```text
 Borrador personal: pendiente de revisar.
@@ -156,7 +121,7 @@ Borrador personal: pendiente de revisar.
 git status --short --untracked-files=all
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
  M README.md
@@ -168,7 +133,7 @@ Salida de referencia (los hashes pueden variar):
 git ls-files
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 README.md
@@ -179,7 +144,7 @@ conversor.py
 git diff
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 diff --git a/README.md b/README.md
@@ -211,7 +176,7 @@ index 1a516af..4b466ae 100644
 git check-ignore -v .env NOTAS_TEMPORALES.txt
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 .gitignore:5:.env	.env
@@ -220,13 +185,10 @@ Salida de referencia (los hashes pueden variar):
 
 ```bash
 git add conversor.py
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
  M README.md
@@ -238,7 +200,7 @@ M  conversor.py
 git diff --staged
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 diff --git a/conversor.py b/conversor.py
@@ -260,17 +222,11 @@ index 1a516af..4b466ae 100644
 
 ```bash
 git commit -m "Añadir conversión Fahrenheit a Celsius"
-```
-
-```bash
 git add README.md .gitignore
-```
-
-```bash
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 A  .gitignore
@@ -281,7 +237,7 @@ M  README.md
 git diff --staged
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 diff --git a/.gitignore b/.gitignore
@@ -308,13 +264,10 @@ index 8031410..42eeea9 100644
 
 ```bash
 git commit -m "Documentar conversión e ignorar archivos locales"
-```
-
-```bash
 git ls-files
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 .gitignore
@@ -326,7 +279,7 @@ conversor.py
 python3 conversor.py
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 20 ºC = 68.0 ºF
@@ -337,7 +290,7 @@ Salida de referencia (los hashes pueden variar):
 git log --oneline --graph --all --decorate
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 * d76847e (HEAD -> main) Documentar conversión e ignorar archivos locales
@@ -346,33 +299,22 @@ Salida de referencia (los hashes pueden variar):
 ```
 
 ```bash
-git status --porcelain
-```
-
-```bash
 git status
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 On branch main
 nothing to commit, working tree clean
 ```
 
-## Informe y comprobación de entrega
+## Respuestas
 
-Al realizar la práctica, copia al `INFORME.md` que pide el enunciado las respuestas
-y las evidencias indicadas en este documento, usando las salidas y hashes de tu
-propia ejecución. No confirmes ese informe. Para que el informe local no aparezca
-como archivo nuevo en `git status`, puedes excluirlo solo en este repositorio:
+El diff añade `fahrenheit_a_celsius` y sustituye la salida del programa por dos conversiones con etiquetas. No hace falta `git add -p`: toda la modificación de `conversor.py` es funcional y se selecciona por archivo. Si hubiera cambios ajenos en ese archivo, `git add -p conversor.py` permitiría seleccionar fragmentos.
 
-```bash
-printf '\n/INFORME.md\n' >> .git/info/exclude
-git status
-git log --oneline --graph --all --decorate
-```
+`.gitignore` debe versionarse para compartir las reglas con todo el equipo. Añadir `.env` a las reglas **no deja de seguir un archivo ya confirmado**. En ese caso se utilizaría `git rm --cached .env` y un nuevo commit: el archivo quedaría en disco, pero su contenido anterior seguiría en el historial. Aquí solo contiene `MODO=desarrollo`, sin credenciales.
 
-El código debe estar limpio y no debe quedar una fusión pendiente. Este
-`solucion.md` reúne la explicación y las respuestas; no es necesario añadir
-otros documentos explicativos al repositorio de clase.
+## Evidencias solicitadas
+
+Incluye en `INFORME.md` las reglas que ignoran `.env` y `NOTAS_TEMPORALES.txt`, dos extractos de `git diff` o `git diff --staged` y las respuestas. Debe haber tres commits y ningún archivo personal versionado. No añadas `INFORME.md` a ningún commit.

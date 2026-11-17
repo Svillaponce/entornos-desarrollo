@@ -1,60 +1,17 @@
 # Actividad 7 — Integración entre ramas y después en main
 
-Fuente: *Actividades tema 3 - Comandos de Git básicos*, Sebastián Villa Ponce, 08/11/2026.
+## Solución paso a paso
 
-## Pasos y decisiones
-
-1. Crear un único commit con catálogo, README y verificador original. Crear las tres ramas desde esa main inicial, sin actualizarlas entre sí.
-2. Confirmar cada desarrollo suministrado y probar su función. Las dos llamadas de préstamo se hacen en el mismo proceso para observar `True` y luego `False`.
-3. Volver a main y confirmar por separado la normalización con `strip()`. El gráfico previo muestra cuatro líneas independientes desde la base común; el mensaje `Normalizar espacios en la búsqueda de main` identifica este avance propio de main.
-4. Crear `integracion` desde `feature/busquedas`, nunca desde la main ya actualizada.
-5. Fusionar préstamos dentro de integración. Resolver el conflicto de `buscar` conservando `casefold()` y la función prestar. En esta solución de fase A se conserva la búsqueda sin distinguir mayúsculas, reservando la unión con la regla de espacios para la fase B.
-6. Fusionar informes en integración. Conservar búsqueda flexible, préstamo, contador y salida de disponibles. Si Git combina automáticamente, comprobar igualmente el comportamiento. Usar `git branch --merged` y el gráfico para verificar qué ramas están integradas.
-7. Probar las tres funciones en fase A antes de tocar main. El verificador completo todavía exige los espacios que aportará main.
-8. Volver a main y fusionar integración. Combinar en buscar `titulo.strip()` y `titulo.casefold()`, comparando con `libro["titulo"].casefold()`. Conservar préstamos e informes.
-9. Ejecutar el verificador original sin cambios, revisar el estado y el gráfico. Conservar todas las ramas para la revisión.
-
-## Conflictos y decisiones
-
-Préstamos contra integración: ambas ramas cambian la normalización en `biblioteca.py`; se conserva la búsqueda sin distinguir mayúsculas y se añade prestar, que delega en buscar.
-
-Informes contra integración: en la ejecución registrada también aparece un conflicto en `biblioteca.py`, al añadir funciones en la misma zona del archivo. Se conservan juntas `prestar` y `contar_disponibles`, además de la búsqueda con `casefold()` y la presentación con el contador. Las tres fusiones de esta actividad han requerido resolución manual del contenido; los bloques reales aparecen a continuación.
-
-Integración contra main: se reúnen las dos reglas de normalización, en lugar de elegir solo una. Las evidencias muestran los conflictos reales y el código completo de cada resolución.
-
-## Respuestas
-
-Git podría completar una fusión que conservara solo `strip()` y perder la normalización de mayúsculas: Python ejecutaría el archivo, pero `buscar("dune")` devolvería `None` y el validador fallaría al acceder a `['titulo']`. También podría quedar una llamada a una función no importada. Revisaría la salida, el traceback y las funciones combinadas, sin dar por demostrada la corrección por el mero éxito del merge.
-
-Fusionar en una auxiliar reúne y prueba funcionalidades manteniendo main al margen de esa fase. Fusionar después la auxiliar en main incorpora todo su historial y debe compatibilizarlo con el trabajo independiente de main. Las ramas son referencias, no copias aisladas del programa.
-
-El resultado conserva los tres libros, permite buscar `  DUNE  `, prestar solo una vez y reduce disponibles de 3 a 2. El verificador, la salida completa de estado, el gráfico anterior a las fusiones y el gráfico final figuran a continuación. No se elimina ninguna rama.
-
-## Desarrollo completo en la terminal de Ubuntu
-
-Trabaja en una carpeta nueva fuera del repositorio de clase. Los archivos Python
-que acompañan este documento contienen el resultado final; para realizar la
-actividad se parte de las versiones iniciales que se muestran a continuación.
-Edita los archivos en PyCharm y ejecuta los comandos desde esta carpeta.
-No se necesitan dependencias externas ni conexión a GitHub.
+Ejecuta los comandos en la terminal de Ubuntu y edita los archivos con PyCharm.
+Los hashes mostrados son ejemplos de una ejecución; utiliza los de tu repositorio.
 
 ```bash
 mkdir git-07-biblioteca-integracion
 cd git-07-biblioteca-integracion
-```
-
-Si todavía no tienes configurada una identidad de Git, después de inicializar
-el repositorio ejecuta `git config user.name "Tu nombre"` y
-`git config user.email "tu-correo@example.com"`. Estos ajustes serán locales.
-Antes de cada commit se revisan el estado y los cambios preparados.
-Las salidas de referencia proceden de una ejecución comprobada; los mensajes
-pueden variar entre Windows y Ubuntu.
-
-```bash
 git init -b main
 ```
 
-Editar `biblioteca.py` en PyCharm y guardar este contenido completo:
+En `biblioteca.py`, guarda este contenido:
 
 ```python
 LIBROS = [
@@ -77,14 +34,14 @@ if __name__ == "__main__":
     mostrar()
 ```
 
-Editar `README.md` en PyCharm y guardar este contenido completo:
+En `README.md`, guarda este contenido:
 
 ```text
 # Biblioteca integradora
 Versión inicial: catálogo y búsqueda exacta.
 ```
 
-Editar `verificar_integracion.py` en PyCharm y guardar este contenido completo:
+En `verificar_integracion.py`, guarda este contenido:
 
 ```python
 from biblioteca import LIBROS, buscar, prestar, contar_disponibles
@@ -104,33 +61,13 @@ print("INTEGRACIÓN COMPLETA: TODAS LAS COMPROBACIONES SUPERADAS")
 
 ```bash
 git add biblioteca.py README.md verificar_integracion.py
-```
-
-```bash
 git status --short
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-A  README.md
-A  biblioteca.py
-A  verificar_integracion.py
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Crear catálogo y verificador de integración"
-```
-
-```bash
 git rev-parse HEAD
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 106378e77cec54a9d57d8ce7f3535641398b29a6
@@ -138,13 +75,10 @@ Salida de referencia (los hashes pueden variar):
 
 ```bash
 git switch main
-```
-
-```bash
 git switch -c feature/busquedas
 ```
 
-Editar `biblioteca.py` en PyCharm y guardar este contenido completo:
+En `biblioteca.py`, guarda este contenido:
 
 ```python
 LIBROS = [
@@ -170,31 +104,13 @@ if __name__ == "__main__":
 
 ```bash
 git add biblioteca.py
-```
-
-```bash
 git status --short
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-M  biblioteca.py
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Implementar busquedas"
-```
-
-```bash
 git merge-base main HEAD
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 106378e77cec54a9d57d8ce7f3535641398b29a6
@@ -204,7 +120,7 @@ Salida de referencia (los hashes pueden variar):
 python3 -c 'from biblioteca import buscar; assert buscar("dune") == buscar("Dune"); print(buscar("dune"))'
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 {'titulo': 'Dune', 'prestado': False}
@@ -212,13 +128,10 @@ Salida de referencia (los hashes pueden variar):
 
 ```bash
 git switch main
-```
-
-```bash
 git switch -c feature/prestamos
 ```
 
-Editar `biblioteca.py` en PyCharm y guardar este contenido completo:
+En `biblioteca.py`, guarda este contenido:
 
 ```python
 LIBROS = [
@@ -251,31 +164,13 @@ if __name__ == "__main__":
 
 ```bash
 git add biblioteca.py
-```
-
-```bash
 git status --short
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-M  biblioteca.py
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Implementar prestamos"
-```
-
-```bash
 git merge-base main HEAD
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 106378e77cec54a9d57d8ce7f3535641398b29a6
@@ -285,7 +180,7 @@ Salida de referencia (los hashes pueden variar):
 python3 -c 'from biblioteca import prestar; print(prestar("Dune")); print(prestar("Dune"))'
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 True
@@ -294,13 +189,10 @@ False
 
 ```bash
 git switch main
-```
-
-```bash
 git switch -c feature/informes
 ```
 
-Editar `biblioteca.py` en PyCharm y guardar este contenido completo:
+En `biblioteca.py`, guarda este contenido:
 
 ```python
 LIBROS = [
@@ -329,31 +221,13 @@ if __name__ == "__main__":
 
 ```bash
 git add biblioteca.py
-```
-
-```bash
 git status --short
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-M  biblioteca.py
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Implementar informes"
-```
-
-```bash
 git merge-base main HEAD
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 106378e77cec54a9d57d8ce7f3535641398b29a6
@@ -363,7 +237,7 @@ Salida de referencia (los hashes pueden variar):
 python3 -c 'from biblioteca import contar_disponibles; print(contar_disponibles())'
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 3
@@ -373,7 +247,7 @@ Salida de referencia (los hashes pueden variar):
 git switch main
 ```
 
-Editar `biblioteca.py` en PyCharm y guardar este contenido completo:
+En `biblioteca.py`, guarda este contenido:
 
 ```python
 LIBROS = [
@@ -399,31 +273,13 @@ if __name__ == "__main__":
 
 ```bash
 git add biblioteca.py
-```
-
-```bash
 git status --short
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-M  biblioteca.py
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Normalizar espacios en la búsqueda de main"
-```
-
-```bash
 git log --oneline --graph --all --decorate
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 * de63e29 (feature/informes) Implementar informes
@@ -438,13 +294,7 @@ Salida de referencia (los hashes pueden variar):
 
 ```bash
 git switch feature/busquedas
-```
-
-```bash
 git switch -c integracion
-```
-
-```bash
 git merge --no-ff feature/prestamos -m "Integrar feature/prestamos"
 ```
 
@@ -460,7 +310,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 git diff --name-only --diff-filter=U
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 biblioteca.py
@@ -470,7 +320,7 @@ biblioteca.py
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 UU biblioteca.py
@@ -480,32 +330,9 @@ UU biblioteca.py
 git diff --cc
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resuelve el conflicto conservando las funciones de ambas ramas. Sustituye las marcas por el código combinado siguiente:
 
-```text
-diff --cc biblioteca.py
-index 23e18bf,dbe1521..0000000
---- a/biblioteca.py
-+++ b/biblioteca.py
-@@@ -5,9 -5,9 +5,13 @@@ LIBROS = 
-  ]
-  
-  def buscar(titulo):
-++<<<<<<< HEAD
- +    titulo = titulo.casefold()
-++=======
-+     titulo = titulo.strip()
-++>>>>>>> feature/prestamos
-      for libro in LIBROS:
- -        if libro["titulo"] == titulo:
- +        if libro["titulo"].casefold() == titulo:
-              return libro
-      return None
-```
-
-Git ha detenido la fusión. Se combinan las funciones de ambos lados, se eliminan las marcas de conflicto y se conserva el resultado siguiente.
-
-Editar `biblioteca.py` en PyCharm y guardar este contenido completo:
+En `biblioteca.py`, guarda este contenido:
 
 ```python
 LIBROS = [
@@ -538,51 +365,13 @@ if __name__ == "__main__":
 
 ```bash
 git add biblioteca.py
-```
-
-```bash
 git status --short
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-M  biblioteca.py
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Integrar feature/prestamos conservando las funcionalidades"
-```
-
-```bash
-git log --oneline --graph --all --decorate
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-* de63e29 (feature/informes) Implementar informes
-| *   5c2bfb0 (HEAD -> integracion) Integrar feature/prestamos conservando las funcionalidades
-| |\  
-| | * 7482dae (feature/prestamos) Implementar prestamos
-| |/  
-|/|   
-| * bb8e8ab (feature/busquedas) Implementar busquedas
-|/  
-| * 910f151 (main) Normalizar espacios en la búsqueda de main
-|/  
-* 106378e Crear catálogo y verificador de integración
-```
-
-```bash
 python3 biblioteca.py
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 Dune
@@ -606,7 +395,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 git diff --name-only --diff-filter=U
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 biblioteca.py
@@ -616,7 +405,7 @@ biblioteca.py
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 UU biblioteca.py
@@ -626,36 +415,9 @@ UU biblioteca.py
 git diff --cc
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resuelve el conflicto conservando las funciones de ambas ramas. Sustituye las marcas por el código combinado siguiente:
 
-```text
-diff --cc biblioteca.py
-index 5556c86,0ee4480..0000000
---- a/biblioteca.py
-+++ b/biblioteca.py
-@@@ -11,12 -10,8 +11,17 @@@ def buscar(titulo)
-              return libro
-      return None
-  
-++<<<<<<< HEAD
- +def prestar(titulo):
- +    libro = buscar(titulo)
- +    if libro is None or libro["prestado"]:
- +        return False
- +    libro["prestado"] = True
- +    return True
-++=======
-+ def contar_disponibles():
-+     return sum(not libro["prestado"] for libro in LIBROS)
-++>>>>>>> feature/informes
-  
-  def mostrar():
-      for libro in LIBROS:
-```
-
-Git ha detenido la fusión. Se combinan las funciones de ambos lados, se eliminan las marcas de conflicto y se conserva el resultado siguiente.
-
-Editar `biblioteca.py` en PyCharm y guardar este contenido completo:
+En `biblioteca.py`, guarda este contenido:
 
 ```python
 LIBROS = [
@@ -692,52 +454,13 @@ if __name__ == "__main__":
 
 ```bash
 git add biblioteca.py
-```
-
-```bash
 git status --short
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-M  biblioteca.py
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Integrar feature/informes conservando las funcionalidades"
-```
-
-```bash
-git log --oneline --graph --all --decorate
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-*   e25f3c0 (HEAD -> integracion) Integrar feature/informes conservando las funcionalidades
-|\  
-| * de63e29 (feature/informes) Implementar informes
-* |   5c2bfb0 Integrar feature/prestamos conservando las funcionalidades
-|\ \  
-| * | 7482dae (feature/prestamos) Implementar prestamos
-| |/  
-* / bb8e8ab (feature/busquedas) Implementar busquedas
-|/  
-| * 910f151 (main) Normalizar espacios en la búsqueda de main
-|/  
-* 106378e Crear catálogo y verificador de integración
-```
-
-```bash
 python3 biblioteca.py
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 Dune
@@ -750,7 +473,7 @@ Disponibles: 3
 git branch --merged
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
   feature/busquedas
@@ -763,7 +486,7 @@ Salida de referencia (los hashes pueden variar):
 python3 -c 'from biblioteca import buscar, prestar, contar_disponibles; assert buscar("dune"); assert contar_disponibles() == 3; assert prestar("DUNE"); assert not prestar("Dune"); assert contar_disponibles() == 2; print("FASE A CORRECTA")'
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 FASE A CORRECTA
@@ -771,9 +494,6 @@ FASE A CORRECTA
 
 ```bash
 git switch main
-```
-
-```bash
 git merge --no-ff integracion -m "Integrar integracion"
 ```
 
@@ -789,7 +509,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 git diff --name-only --diff-filter=U
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 biblioteca.py
@@ -799,7 +519,7 @@ biblioteca.py
 git status --short
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 UU biblioteca.py
@@ -809,32 +529,9 @@ UU biblioteca.py
 git diff --cc
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resuelve el conflicto conservando las funciones de ambas ramas. Sustituye las marcas por el código combinado siguiente:
 
-```text
-diff --cc biblioteca.py
-index a3b4d9d,454b9cb..0000000
---- a/biblioteca.py
-+++ b/biblioteca.py
-@@@ -5,9 -5,9 +5,13 @@@ LIBROS = 
-  ]
-  
-  def buscar(titulo):
-++<<<<<<< HEAD
- +    titulo = titulo.strip()
-++=======
-+     titulo = titulo.casefold()
-++>>>>>>> integracion
-      for libro in LIBROS:
--         if libro["titulo"] == titulo:
-+         if libro["titulo"].casefold() == titulo:
-              return libro
-      return None
-```
-
-Git ha detenido la fusión. Se combinan las funciones de ambos lados, se eliminan las marcas de conflicto y se conserva el resultado siguiente.
-
-Editar `biblioteca.py` en PyCharm y guardar este contenido completo:
+En `biblioteca.py`, guarda este contenido:
 
 ```python
 LIBROS = [
@@ -872,54 +569,13 @@ if __name__ == "__main__":
 
 ```bash
 git add biblioteca.py
-```
-
-```bash
 git status --short
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-M  biblioteca.py
-```
-
-```bash
 git diff --staged
-```
-
-```bash
 git commit -m "Integrar integracion conservando las funcionalidades"
-```
-
-```bash
-git log --oneline --graph --all --decorate
-```
-
-Salida de referencia (los hashes pueden variar):
-
-```text
-*   5c0adb9 (HEAD -> main) Integrar integracion conservando las funcionalidades
-|\  
-| *   e25f3c0 (integracion) Integrar feature/informes conservando las funcionalidades
-| |\  
-| | * de63e29 (feature/informes) Implementar informes
-| * |   5c2bfb0 Integrar feature/prestamos conservando las funcionalidades
-| |\ \  
-| | * | 7482dae (feature/prestamos) Implementar prestamos
-| | |/  
-| * / bb8e8ab (feature/busquedas) Implementar busquedas
-| |/  
-* / 910f151 Normalizar espacios en la búsqueda de main
-|/  
-* 106378e Crear catálogo y verificador de integración
-```
-
-```bash
 python3 biblioteca.py
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 Dune
@@ -932,7 +588,7 @@ Disponibles: 3
 python3 verificar_integracion.py
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 INTEGRACIÓN COMPLETA: TODAS LAS COMPROBACIONES SUPERADAS
@@ -942,7 +598,7 @@ INTEGRACIÓN COMPLETA: TODAS LAS COMPROBACIONES SUPERADAS
 git branch --merged
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
   feature/busquedas
@@ -956,7 +612,7 @@ Salida de referencia (los hashes pueden variar):
 git log --oneline --graph --all --decorate
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 *   5c0adb9 (HEAD -> main) Integrar integracion conservando las funcionalidades
@@ -976,33 +632,32 @@ Salida de referencia (los hashes pueden variar):
 ```
 
 ```bash
-git status --porcelain
-```
-
-```bash
 git status
 ```
 
-Salida de referencia (los hashes pueden variar):
+Resultado:
 
 ```text
 On branch main
 nothing to commit, working tree clean
 ```
 
-## Informe y comprobación de entrega
+## Conflictos y decisiones
 
-Al realizar la práctica, copia al `INFORME.md` que pide el enunciado las respuestas
-y las evidencias indicadas en este documento, usando las salidas y hashes de tu
-propia ejecución. No confirmes ese informe. Para que el informe local no aparezca
-como archivo nuevo en `git status`, puedes excluirlo solo en este repositorio:
+Préstamos contra integración: ambas ramas cambian la normalización en `biblioteca.py`; se conserva la búsqueda sin distinguir mayúsculas y se añade prestar, que delega en buscar.
 
-```bash
-printf '\n/INFORME.md\n' >> .git/info/exclude
-git status
-git log --oneline --graph --all --decorate
-```
+Informes contra integración: en la ejecución registrada también aparece un conflicto en `biblioteca.py`, al añadir funciones en la misma zona del archivo. Se conservan juntas `prestar` y `contar_disponibles`, además de la búsqueda con `casefold()` y la presentación con el contador. Las tres fusiones de esta actividad han requerido resolución manual del contenido; las resoluciones se muestran en los pasos anteriores.
 
-El código debe estar limpio y no debe quedar una fusión pendiente. Este
-`solucion.md` reúne la explicación y las respuestas; no es necesario añadir
-otros documentos explicativos al repositorio de clase.
+Integración contra main: se reúnen las dos reglas de normalización, en lugar de elegir solo una. Las evidencias muestran los conflictos reales y el código completo de cada resolución.
+
+## Respuestas
+
+Git podría completar una fusión que conservara solo `strip()` y perder la normalización de mayúsculas: Python ejecutaría el archivo, pero `buscar("dune")` devolvería `None` y el validador fallaría al acceder a `['titulo']`. También podría quedar una llamada a una función no importada. Revisaría la salida, el traceback y las funciones combinadas, sin dar por demostrada la corrección por el mero éxito del merge.
+
+Fusionar en una auxiliar reúne y prueba funcionalidades manteniendo main al margen de esa fase. Fusionar después la auxiliar en main incorpora todo su historial y debe compatibilizarlo con el trabajo independiente de main. Las ramas son referencias, no copias aisladas del programa.
+
+El resultado conserva los tres libros, permite buscar `  DUNE  `, prestar solo una vez y reduce disponibles de 3 a 2. No se elimina ninguna rama.
+
+## Evidencias solicitadas
+
+Incluye en `INFORME.md` el gráfico anterior a las fusiones y la base de las ramas, los conflictos y sus resoluciones, un ejemplo de fallo funcional sin conflicto textual, la salida completa del validador y de `git status`, el gráfico final y la explicación de las dos fases. Identifica el commit independiente de `main` y conserva todas las ramas. No añadas `INFORME.md` a ningún commit.
